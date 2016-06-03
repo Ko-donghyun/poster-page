@@ -1,0 +1,35 @@
+
+
+<div class="jumbotron">
+  <h1>Pocket Poster</h1>
+  <p class="lead">Pocket Poster는 포스터를 수집하는 사람들을 위한 사이트입니다. 검색을 통해 원하는 영화의 포스터를 찾고, 담아보세요. 담은 포스터는 내 포스터 메뉴에서 찾을 수 있습니다.</p>
+  <p>총 <b><%= @all_count %></b>개의 포스터가 등록되었습니다.</p>
+    <p><a class="btn btn-lg btn-success" href="/home/upload" role="button">새 포스터 업로드</a></p>
+      <form action="/home/search" method="GET">
+        <div class="input-group">
+          <input type="text" name="title" class="form-control" placeholder="영화제목을 입력해 주세요.">
+          <span class="input-group-btn">
+            <button class="btn btn-default" style="padding: 1px 24px 1px 24px" type="submit">검색</button>
+          </span>
+        </div>
+      </form>
+    
+    
+</div>
+
+<div class="row marketing">
+  <% @posters.each do |poster| %>
+    
+    <div class="col-xs-12 col-sm-6 col-md-6">
+      <center>
+        <img class="thumbnail" height="250" width="180" src="<%= poster.image_url %>">
+        <a href="/home/search?title=<%= poster.movie_title %>"><h4><%= poster.movie_title %></h4></a>
+      </center>
+    </div>
+  <% end %>
+  
+</div>
+
+  <footer class="footer">
+  <p>&copy; 멋쟁이사자처럼</p>
+  </footer>

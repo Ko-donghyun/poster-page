@@ -1,0 +1,95 @@
+
+
+<form id="upload" action="/home/addPoster" method="POST" enctype="multipart/form-data">
+  <div class="col-xs-0 col-sm-3 col-md-3"></div>
+  <div class="col-xs-12 col-sm-6 col-md-6">
+    <center>
+      <input class="form-control" type="text" name="movie_title" id="movieTitle" placeholder="영화 제목을 입력해 주세요."></p>
+
+      <div class="browse-wrap">
+        <div class="title">포스터&nbsp;이미지&nbsp;업로드</div>
+        <input type="file" accept="image/*" id="posterImage" name="poster_image" class="upload" img_target="#image_target" capture="gallery" >
+      </div>
+      
+      <input type="submit" class="btn btn-success" value="등록하기"> 
+      <img id="image_target" style="width:100%;"/><br>
+    </center>
+  </div>
+  <div class="col-xs-12 col-sm-3 col-md-3"></div>
+</form>
+
+<!-- Small modal -->
+
+<div id="loading" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <br><p style="text-align: center">업로드 중입니다</p><br><br>
+      <center>
+        <img width="150px" height="150px" src="/img/loading_image.gif">
+      </center>
+      <br><br>
+    </div>
+  </div>
+</div>
+
+
+
+<script>
+$("#upload").submit(function(event){
+  if ($("#movieTitle").val() === '') {
+    $("#movieTitle").focus();
+    event.preventDefault();
+  } else if ($('#posterImage').val() === '') {
+    event.preventDefault();
+  } else {
+    $('#loading').modal('show');
+  }
+});
+
+var setPreview = function (opt){
+  var inputFile = opt.inputFile.get(0);
+  var img       = opt.img.get(0);
+  // FileReader
+  if (window.FileReader) {
+    // image 파일만
+    if (!inputFile.files[0].type.match(/image\//)) return;
+  
+    // preview
+    try {
+      var reader = new FileReader();
+      reader.onload = function(e){
+        img.src = e.target.result;
+        img.style.display = '';
+      }
+    reader.readAsDataURL(inputFile.files[0]);
+    } catch (e) {
+      // exception...
+    }
+    // img.filters (MSIE)
+    } else if (img.filters) {
+      inputFile.select();
+      inputFile.blur();
+      var imgSrc = document.selection.createRange().text;
+  
+      img.style.filter = "progid:DXImageTransform.Microsoft.AlphaImageLoader(enable='true',sizingMethod='scale',src=\""+imgSrc+"\")";           
+      img.style.display = '';
+    // no support
+    } else {
+     // Safari5, ...
+    }
+  }
+         
+  $(document).ready(function () {
+
+    $('#posterImage').change(function(){
+      var opt = {
+        inputFile: $(this),
+        img: $($(this).attr('img_target')),
+        w: $($(this).attr('img_target')).width(),
+        h: $($(this).attr('img_target')).height()
+       };
+       setPreview(opt);
+      });
+     
+  });
+</script>

@@ -1,0 +1,89 @@
+
+<form action="/home/search" method="GET">
+  <div class="input-group">
+    <input type="text" name="title" class="form-control" placeholder="영화제목을 입력해 주세요.">
+    <span class="input-group-btn">
+      <button class="btn btn-default" type="submit">검색</button>
+    </span>
+  </div><!-- /input-group -->
+</form>
+<br>
+<div class="panel panel-default">
+  <div class="panel-body">
+    <h4>"<%= @movie_title %>"로 검색 된 영화는 다음과 같습니다.</h4>
+  </div>
+</div>
+
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">사이트 내 검색 결과</h3>
+  </div>
+  
+  <div class="panel-body">
+
+    <% if @posters.empty? %>
+      <p>검색 결과가 존재하지 않습니다.</p>
+      <a href="/home/upload">업로드 하러가기</a>
+    <% else %>
+      <% @posters.each do |poster| %> 
+
+        <div class="col-xs-12 col-sm-6 col-md-6">
+          <center>
+            <div class="panel panel-default">
+              <div class="panel-body">
+                <img src="<%= poster.image_url %>" class="thumbnail" height="250" width="180"><br>
+              </div>
+              <div class="panel-footer"><%= poster.movie_title %>
+                <br>
+                <% if user_signed_in? %>
+                  <% if poster.own_poster_id %>
+                    <span id="<%= poster.id %>"><button class="btn btn-default" type="button" id="<%= poster.id %>" onclick="out_poster(<%= poster.id %>)">담기취소</button></span>
+                  <% else %>
+                    <span id="<%= poster.id %>"><button class="btn btn-success" type="button" id="<%= poster.id %>" onclick="own_poster(<%= poster.id %>)">담기</button></span>
+                  <% end %>
+                <% end %>
+              </div>
+          </center>
+        </div>
+                
+      <% end %>
+    <% end %>
+    
+  </div>
+</div>
+
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">네이버 검색 결과</h3>
+  </div>
+  
+  <div class="panel-body">
+
+    <% @movies.each do |movie| %>
+       
+        <div class="col-xs-12 col-sm-6 col-md-6">
+          <center>
+            <div class="panel panel-default">
+              <div class="panel-body">
+                  <% if movie[:image_url] == '' %>
+                    <img class="image_thumnail" src="/img/noImage.jpg" class="thumbnail" height="250" width="180"><br>
+                  <% else %>
+                    <a target="_blank" href="<%= movie[:link] %>"><img class="image_thumnail" src="<%= movie[:image_url] %>" class="thumbnail" height="250" width="180"></a><br>
+                  <% end %>
+              </div>
+              <div class="panel-footer"> <a target="_blank" href="<%= movie[:link] %>"><%= movie[:title] %></a></div>
+            </div>
+          </center> 
+        </div>
+         
+    <% end %>
+
+  </div>
+  
+<br>
+<center>
+<p><a class="btn btn-lg btn-success" href="/home/upload" role="button">새 포스터 업로드</a></p>
+</center>
+    
+
+

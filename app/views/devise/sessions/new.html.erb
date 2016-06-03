@@ -1,0 +1,52 @@
+<br><br>
+  <div class="col-lg-3 col-md-2 col-sm-2 col-xs-0"></div>
+  <div class="col-lg-6 col-md-8 col-sm-8 col-xs-12">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title">로그인</h3>
+      </div>
+    
+      <div class="panel-body" >
+            
+            <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
+              <br>
+              <!--이메일 정보를 받는 부분 시작 -->
+              <div class="field">
+                <%= f.email_field :email, autofocus: true, class:"form-control", placeholder:"이메일"%>
+              </div>
+              
+              <!--이메일 정보를 받는 부분 끝 -->
+              <br>
+              
+              <!--비밀번호를 받는 부분 시작-->
+              <div class="field">
+                <%= f.password_field :password, autocomplete: "off", class:"form-control", placeholder:"비밀번호" %>
+              </div>
+              <!--비밀번호를 받는 부분 끝-->
+          
+              <br>
+              <!--로그인 상태를 유지할 건지 물어보는 부분 시작-->
+              <% if devise_mapping.rememberable? -%>
+                <div class="field">
+                  <%= f.check_box :remember_me %>
+                  <%= f.label :로그인_상태_유지 %>
+                </div>
+              <% end -%>
+              <!--로그인 상태를 유지할 건지 물어보는 부분 끝-->
+              
+              <br>
+              <!--로그인 버튼-->
+              <div class="action">
+                <%= f.submit "로그인", class:"btn btn-primary" %>
+              </div>
+              <!--로그인 버튼-->
+              <br>
+              
+            <% end %>
+  
+      
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-3 col-md-2 col-sm-2 col-xs-0"></div>
+</div>

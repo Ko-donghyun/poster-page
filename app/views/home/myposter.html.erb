@@ -1,0 +1,119 @@
+
+<form action="/home/myposter" method="GET">
+  <div class="input-group">
+    <input type="text" name="title" class="form-control" placeholder="내 포스터의 이름을 입력해 주세요.">
+    <span class="input-group-btn">
+      <button class="btn btn-default" type="submit">검색</button>
+    </span>
+  </div><!-- /input-group -->
+</form>
+<br>
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <% if @movie_title == '' %>
+      <h3 class="panel-title">내 포스터 (<%= @myPostersCount %>)</h3>
+    <% else %>
+      <h3 class="panel-title">"<%= @movie_title %>" 관련한 내 포스터 (<%= @myPostersCount %>)</h3>
+    <% end %>
+  </div>
+  <div class="panel-body">
+    <div>
+      <% if @myPosters.empty? %>
+        <h2>포스터가 존재하지 않습니다.</h2>
+      <% else %>
+      
+      <% @myPosters.each do |poster| %>
+        <div class="col-xs-12 col-sm-6 col-md-6">
+          <center>
+            <div class="panel panel-default">
+              <div class="panel-body">
+               <img class="thumbnail" height="250" width="180" src="<%= poster.poster_image_url %>">
+              </div>
+              <div class="panel-footer"><%= poster.poster_movie_title %>
+                <br>
+                <span id="<%= poster.poster_id %>"><button class="btn btn-de" type="button" id="<%= poster.poster_id %>" onclick="out_poster(<%= poster.poster_id %>)">담기취소</button></span>
+              </div>
+            </div>
+          </center>
+        </div>
+
+        <% end %>
+      <% end %>
+    </div>
+  </div>
+  <center><p><a class="btn btn-lg btn-success" href="/home/upload" role="button">새 포스터 업로드</a></p></center>
+        
+  <!--페이지네이션-->
+  <nav style="text-align:center;">
+    <ul class="pagination">
+      <li>
+        <% if @page.to_i <= 1 %>
+        <a href="/home/myposter?pages=<%= @page %>" aria-label="Previous">
+          <i class="glyphicon glyphicon-chevron-left"></i>
+        </a>
+        <% else %>
+        <a href="/home/myposter?pages=<%= (@page.to_i - 1).to_s %>" aria-label="Previous">
+          <i class="glyphicon glyphicon-chevron-left"></i>
+        </a>
+        <% end %>
+      </li>
+      
+      
+      <% total = @myPostersCount %> 
+      <% mytimes = ((@page.to_i - 1) / 10) %>
+      <% page = 1 %>
+      <% if total <= 60 %>
+      
+        <% while total > 0 %>
+          <% if page == @page.to_i %>
+            <li class="active"><a href="/home/myposter?pages=<%= page %>"><%= page %></a></li>
+          <% else %>
+            <li><a href="/home/myposter?pages=<%= page %>"><%= page %></a></li>
+          <% end %>
+          <% page += 1 %>
+          <% total -= 6 %>
+        <% end %>
+      
+      <% else %>
+      
+        <% if ((mytimes + 1) * 60) >= total %>
+        
+          <% endpoint = ((total % 60) / 6) + 1 %>
+          <% for value in (mytimes * 10 + 1)..(mytimes * 10 + endpoint) %>
+            <% if value == @page.to_i %>
+              <li class="active"><a href="/home/myposter?pages=<%= value %>"><%= value %></a></li>
+            <% else %>
+              <li><a href="/home/myposter?pages=<%= value %>"><%= value %></a></li>
+            <% end %>
+          <% end %>
+          
+        <% else %>
+        
+          <% for value in (mytimes * 10 + 1)..(mytimes * 10 + 10) %>
+            <% if value == @page.to_i %>
+              <li class="active"><a href="/home/myposter?pages=<%= value %>"><%= value %></a></li>
+            <% else %>
+              <li><a href="/home/myposter?pages=<%= value %>"><%= value %></a></li>
+            <% end %>
+          <% end %>
+          
+        <% end %>
+      
+      <% end %>
+      
+      
+      <li>
+        <% if @page.to_i >= (@myPostersCount.to_i / 6) %>
+        <a href="/home/myposter?pages=<%= @page %>" aria-label="Next">
+          <i class="glyphicon glyphicon-chevron-right"></i>
+        </a>
+        <% else %>
+        <a href="/home/myposter?pages=<%= (@page.to_i + 1).to_s %>" aria-label="Next">
+          <i class="glyphicon glyphicon-chevron-right"></i>
+        </a>
+        <% end %>
+      </li>
+    </ul>
+  </nav>
+</div>
+

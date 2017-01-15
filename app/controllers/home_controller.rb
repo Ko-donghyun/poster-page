@@ -45,7 +45,7 @@ class HomeController < ApplicationController
     end
     
     
-    url = URI.parse(URI.encode('https://openapi.naver.com/v1/search/movie.xml?query=' + @movie_title))
+    url = URI.parse(URI.encode('https://openapi.naver.com/v1/search/movie.xml?query=' + params[:title]))
     req = Net::HTTP::Get.new(url.to_s)
     
     # params = { :query => 'civil' }

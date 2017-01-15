@@ -103,7 +103,7 @@
       
       
       <li>
-        <% if @page.to_i >= (@myPostersCount.to_i / 6) %>
+        <% if @page.to_i > (@myPostersCount.to_i / 6) %>
         <a href="/home/myposter?pages=<%= @page %>" aria-label="Next">
           <i class="glyphicon glyphicon-chevron-right"></i>
         </a>
